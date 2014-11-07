@@ -11,7 +11,7 @@ module Resque
 
       def on_failure_history(exception, *args)
         Resque.redis.lpush(HISTORY_SET_NAME, {:class => "#{self}",
-                                              :time => Time.now.strftime("%Y-%m-%d %H:%M"),
+                                              :time => Time.now.strftime("%Y-%m-%d %H:%M:%S %z"),
                                               :args => args,
                                               :error => exception.message
         }.to_json)
@@ -31,7 +31,7 @@ module Resque
         elapsed_seconds = (Time.now - @start_time).to_i
         Resque.redis.lpush(HISTORY_SET_NAME, {:class => "#{self}",
                                               :args => args,
-                                              :time => Time.now.strftime("%Y-%m-%d %H:%M"),
+                                              :time => Time.now.strftime("%Y-%m-%d %H:%M:%S %z"),
                                               :execution =>elapsed_seconds
         }.to_json)
 
